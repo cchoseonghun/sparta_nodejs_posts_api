@@ -5,6 +5,9 @@ const PORT = 3000
 const postsRouter = require('./routes/posts');
 
 
+const connect = require('./schemas');
+connect();
+
 app.use(express.json());
 
 app.use('/posts', postsRouter);
