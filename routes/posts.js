@@ -72,4 +72,25 @@ router.put('/:_postId', async (req, res) => {
   }
 })
 
+router.delete('/:_postId', async (req, res) => {
+  const {_postId} = req.params;
+  const {password} = req.body;
+
+  try {
+    const post = await Post.findOne({_id: _postId}).exec();  // 해당 게시글 확인
+    if (!post) {
+      return res.status(404).json({ message: '게시글 조회에 실패하였습니다.' });
+    } else {
+      if (password !== post.password) {  // 비밀번호 체크
+        return res.status(401).json({ message: '게시글 삭제 권한이 없습니다.' });
+      } else {
+        await Post.deleteOne({_id: _postId});
+        return res.status(200).json({ message: '게시글을 삭제하였습니다.' });
+      }
+    }
+  } catch (err) {
+    return res.status(400).json({ message: '데이터 형식이 올바르지 않습니다.' });
+  }
+})
+
 module.exports = router;
