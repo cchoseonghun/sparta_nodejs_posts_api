@@ -3,8 +3,35 @@ const router = express.Router();
 
 const Post = require('../schemas/post');
 
-router.get('/', (req, res) => {
-  res.send('hi');
+router.get('/', async (req, res) => {
+  const posts = await Post.find({});
+  let new_posts = posts.map((post) => {
+    let temp = {};
+    temp.postId = post._id;
+    temp.user = post.user;
+    temp.title = post.title;
+    temp.createdAt = post.createdAt;
+    return temp;
+  })
+
+  return res.status(200).json({ data: new_posts });
+})
+
+router.get('/:_postId', async (req, res) => {
+  const {_postId} = req.params;
+
+  const post = await Post.find({_id: _postId});
+  const [new_post] = post.map((post) => {
+    let temp = {};
+    temp.postId = post._id;
+    temp.user = post.user;
+    temp.title = post.title;
+    temp.content = post.content;
+    temp.createdAt = post.createdAt;
+    return temp;
+  })
+
+  return res.status(200).json({ data: new_post });
 })
 
 router.post('/', async (req, res) => {

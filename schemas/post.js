@@ -1,3 +1,4 @@
+const { query } = require('express');
 const mongoose = require('mongoose');
 
 const postSchema = new mongoose.Schema({
@@ -16,8 +17,13 @@ const postSchema = new mongoose.Schema({
   content: {
     type: String,
   }
-}, {
-  timestamps: { createdAt: true, updatedAt: false }
 });
+
+postSchema.set('timestamps', { createdAt: true, updatedAt: false });
+
+// postSchema.virtual('postId').get(function() {
+//   return this._id.toHexString();
+// }); 
+// postSchema.set('toJSON', { virtuals: true });
 
 module.exports = mongoose.model("Post", postSchema);
