@@ -62,7 +62,7 @@ router.put('/:_postId', async (req, res) => {
       } else {
         await Post.updateOne(
           {_id: _postId}, 
-          {$set: {password: password, title: title, content: content}}
+          {$set: {title: title, content: content}}
         )
         return res.status(200).json({ message: '게시글을 수정하였습니다.' });
       }
